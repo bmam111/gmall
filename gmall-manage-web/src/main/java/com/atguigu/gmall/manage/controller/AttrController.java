@@ -16,21 +16,18 @@ public class AttrController {
     @Reference
     AttrService attrService;
 
+    @RequestMapping("getAttrListByCtg3Id")
+    @ResponseBody
+    public List<BaseAttrInfo> getAttrListByCtg3Id(String catalog3Id){
+
+        List<BaseAttrInfo> baseAttrInfos = attrService.getAttrListByCtg3Id(catalog3Id);
+        return baseAttrInfos;
+
+    }
+
     @RequestMapping("saveAttr")
     @ResponseBody
     public String saveAttr(BaseAttrInfo baseAttrInfo){
-
-        System.out.println("==================");
-        System.out.println("===>>baseAttrInfo.id:" + baseAttrInfo.getId());
-        System.out.println("===>>baseAttrInfo.attrName:" + baseAttrInfo.getAttrName());
-        System.out.println("===>>baseAttrInfo.catalog3Id:" + baseAttrInfo.getCatalog3Id());
-        System.out.println("===>>baseAttrInfo.attrValueList:" + baseAttrInfo.getAttrValueList().size());
-        for (BaseAttrValue baseAttrValue : baseAttrInfo.getAttrValueList()) {
-            System.out.println(baseAttrValue.getId() + "---" + baseAttrValue.getValueName()
-                    + "---" + baseAttrValue.getAttrId() + "---" + baseAttrValue.getIsEnabled());
-        }
-        System.out.println("==================");
-
         attrService.saveAttr(baseAttrInfo);
         return "success";
 

@@ -10,6 +10,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AttrServiceImpl implements AttrService {
@@ -82,5 +83,29 @@ public class AttrServiceImpl implements AttrService {
         BaseAttrValue baseAttrValue = new BaseAttrValue();
         baseAttrValue.setAttrId(attrId);
         return baseAttrValueMapper.select(baseAttrValue);
+    }
+
+    @Override
+    public List<BaseAttrInfo> getAttrListByCtg3Id(String catalog3Id) {
+        BaseAttrInfo baseAttrInfo = new BaseAttrInfo();
+        baseAttrInfo.setCatalog3Id(catalog3Id);
+        List<BaseAttrInfo> select = baseAttrInfoMapper.select(baseAttrInfo);
+
+        for (BaseAttrInfo attrInfo : select) {
+            String attrId = attrInfo.getId();
+            BaseAttrValue baseAttrValue = new BaseAttrValue();
+            baseAttrValue.setAttrId(attrId);
+            List<BaseAttrValue> select1 = baseAttrValueMapper.select(baseAttrValue);
+
+            attrInfo.setAttrValueList(select1);
+        }
+        return select;
+    }
+
+    @Override
+    public List<BaseAttrInfo> getAttrListByValueIds(Set<String> valueIds) {
+        String join = StringUtils.join(valueIds, ",");
+        List<BaseAttrInfo> baseAttrInfos = baseAttrValueMapper.selectAttrListByValueIds(join);
+        return baseAttrInfos;
     }
 }

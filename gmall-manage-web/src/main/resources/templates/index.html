@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
     <script type="text/javascript" src="/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/easyui/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="/webuploader/webuploader.js"></script>
 </head>
 <body class="easyui-layout">
     <div data-options="region:'north',border:false" style="height:60px;background:#B3DFDA;padding:10px">
@@ -25,7 +27,7 @@
             <div title="Help" data-options="iconCls:'icon-help'" style="padding:10px;">
                 <ul>
                     <li>
-                        商品SPU管理
+                        <a href="javascript:addSpuTabs();">商品SPU管理</a>
                     </li>
                 </ul>
             </div>
@@ -55,6 +57,19 @@
                 });
             }else {
                 $("#tt").tabs("select", "属性信息管理");
+            }
+        }
+
+        function addSpuTabs() {
+            var b = $("#tt").tabs("exists", "SPU信息管理");
+            if(!b){
+                $("#tt").tabs("add",{
+                    title:"SPU信息管理",
+                    href:"spuListPage",
+                    closable:true
+                });
+            }else {
+                $("#tt").tabs("select", "SPU信息管理");
             }
         }
     </script>

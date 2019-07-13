@@ -12,11 +12,13 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ListServiceImpl implements ListService {
@@ -35,6 +37,15 @@ public class ListServiceImpl implements ListService {
             List<SearchResult.Hit<SkuLsInfo, Void>> hits = execute.getHits(SkuLsInfo.class);
             for (SearchResult.Hit<SkuLsInfo, Void> hit : hits) {
                 SkuLsInfo source = hit.source;
+
+                //搜索时的高亮字段
+                Map<String, List<String>> highlight = hit.highlight;
+                if(highlight != null){
+                    List<String> skuName = highlight.get("skuName");
+                    String s = skuName.get(0);
+                    source.setSkuName(s);
+                }
+
                 skuLsInfos.add(source);
             }
         } catch (IOException e) {
@@ -78,6 +89,12 @@ public class ListServiceImpl implements ListService {
         ds1.query(boolQueryBuilder);
         ds1.size(100);
         ds1.from(0);
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.field("skuName");
+        highlightBuilder.preTags("<span style='color:red;font-weight:bolder;'>");
+        highlightBuilder.postTags("</span>");
+        ds1.highlight(highlightBuilder);
 
         System.out.println(ds1.toString());
         return ds1.toString();

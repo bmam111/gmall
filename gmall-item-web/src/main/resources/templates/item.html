@@ -1047,7 +1047,7 @@
     function addToCart() {
         var skuId = $("#skuIdInput").val();
         var num = $("#numInput").val();
-        var url = "http://cart.gmall.com/addToCart?skuId="+skuId+"&num="+num;
+        var url = "http://cart.gmall.com:8084/addToCart?skuId="+skuId+"&skuNum="+num;
         location.href = url;
     }
 </script>

@@ -20,6 +20,7 @@ public class ListController {
     @Reference
     AttrService attrService;
 
+    //由于没有首页index页面,要模拟从首页点击catalog3Id进入该页面,应该访问URL:http://localhost:8083/list.html?catalog3Id=5
     @RequestMapping("list.html")
     public String list(SkuLsParam skuLsParam, ModelMap map){
 

@@ -2,6 +2,7 @@ package com.atguigu.gmall.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class SkuInfo implements Serializable {
@@ -12,7 +13,7 @@ public class SkuInfo implements Serializable {
     @Column
     private String spuId;
     @Column
-    private String price;
+    private BigDecimal price;
     @Column
     private String skuName;
     @Column
@@ -49,11 +50,11 @@ public class SkuInfo implements Serializable {
         this.spuId = spuId;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

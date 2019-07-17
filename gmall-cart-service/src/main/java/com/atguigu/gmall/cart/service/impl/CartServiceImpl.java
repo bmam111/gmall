@@ -53,14 +53,16 @@ public class CartServiceImpl implements CartService {
         cartInfo.setUserId(userId);
 
         List<CartInfo> select = cartInfoMapper.select(cartInfo);
+        if(select == null || select.size() == 0){
+            jedis.del("carts:" + userId + ":info");
+        }else {
+            HashMap<String, String> stringStringHashMap = new HashMap<>();
+            for (CartInfo info : select) {
+                stringStringHashMap.put(info.getId(), JSON.toJSONString(info));
+            }
 
-        HashMap<String, String> stringStringHashMap = new HashMap<>();
-        for (CartInfo info : select) {
-            stringStringHashMap.put(info.getId(), JSON.toJSONString(info));
+            jedis.hmset("carts:" + userId + ":info", stringStringHashMap);
         }
-
-
-        jedis.hmset("carts:" + userId + ":info", stringStringHashMap);
 
         jedis.close();
 
@@ -132,5 +134,17 @@ public class CartServiceImpl implements CartService {
         }
 
         return cartInfos;
+    }
+
+    @Override
+    public void deleteCartById(List<CartInfo> cartInfos) {
+        //todo:优化成一条删除语句
+
+        for (CartInfo cartInfo : cartInfos) {
+            cartInfoMapper.deleteByPrimaryKey(cartInfo);
+        }
+
+        //同步缓存
+        syncCache(cartInfos.get(0).getUserId());
     }
 }

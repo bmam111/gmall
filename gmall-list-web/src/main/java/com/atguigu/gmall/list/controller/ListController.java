@@ -32,7 +32,7 @@ public class ListController {
         //这里使用iterator可以删除特定位置符合条件的元素。否则List删除元素比较麻烦。
         String[] valueId = skuLsParam.getValueId();
         List<Crumb> crumbs = new ArrayList<>();  //面包屑
-        if(valueId != null && valueId.length > 0){
+        if(valueId != null && valueId.length > 0 && baseAttrInfos != null){
             for (String s : valueId) {
 
                 //制作面包屑

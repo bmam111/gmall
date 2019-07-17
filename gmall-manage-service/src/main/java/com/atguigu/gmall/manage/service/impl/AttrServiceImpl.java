@@ -104,8 +104,12 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public List<BaseAttrInfo> getAttrListByValueIds(Set<String> valueIds) {
-        String join = StringUtils.join(valueIds, ",");
-        List<BaseAttrInfo> baseAttrInfos = baseAttrValueMapper.selectAttrListByValueIds(join);
-        return baseAttrInfos;
+        if(valueIds != null && valueIds.size() > 0){
+            String join = StringUtils.join(valueIds, ",");
+            List<BaseAttrInfo> baseAttrInfos = baseAttrValueMapper.selectAttrListByValueIds(join);
+            return baseAttrInfos;
+        }else{
+            return null;
+        }
     }
 }
